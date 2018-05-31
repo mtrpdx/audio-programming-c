@@ -19,6 +19,7 @@ int main()
     double low_frequency;   /* we calculate the closest midi note freq on lower side */
     double high_frequency;  /* ... and the closest midi note freq on higher side */
     double difference; 
+    double bendfloat;
     int    midinote;     /* ... we want to find this note. */
     int    bend;
     int    low_side;    /* closest MIDI note on low side */
@@ -78,7 +79,15 @@ int main()
         sign = "-";
     }
     difference = difference / (high_frequency - low_frequency);
-    bend = (int) (difference * 100 + 0.5);
+    if (sign == "-") {
+        bendfloat = difference * 100;
+        bend = (int) ceil(difference * 100 - 0.5);
+    }
+    else if (sign == "+") {
+        bendfloat = difference * 100;
+        bend = (int) floor(difference * 100 + 0.5);
+    }
+    printf("exact pitchbend = %s%f%\n", sign, bendfloat);
     printf("pitchbend = %s%d%%\n",sign, bend);
 
     return 0;
